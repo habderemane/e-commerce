@@ -1,7 +1,10 @@
 // Configuration pour basculer entre mode démo et mode production
-const isDemoMode = process.env.REACT_APP_DEMO_MODE === 'true' || 
+/*const isDemoMode = process.env.REACT_APP_DEMO_MODE === 'true' ||
                    !process.env.REACT_APP_API_URL ||
                    process.env.NODE_ENV === 'development';
+*/
+const isDemoMode = true;
+
 
 let axiosInstance;
 
