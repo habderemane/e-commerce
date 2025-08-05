@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Configuration de base pour Axios
 const axiosInstance = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:3001',
+  baseURL: process.env.REACT_APP_API_URL || 'https://e-backend-production.up.railway.app',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
@@ -71,5 +71,92 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+const apiService = {
+  // ============================
+  // AUTHENTIFICATION
+  // ============================
+  login: (data) => axiosInstance.post('/api/auth/login', data),
+  register: (data) => axiosInstance.post('/api/auth/register', data),
+  logout: () => axiosInstance.post('/api/auth/logout'),
+  me: () => axiosInstance.get('/api/auth/me'),
+  refresh: () => axiosInstance.post('/api/auth/refresh'),
 
-export default axiosInstance;
+  // ============================
+  // UTILISATEURS
+  // ============================
+  getUsers: () => axiosInstance.get('/api/users'),
+  getUser: (id) => axiosInstance.get(`/api/users/${id}`),
+  updateUser: (id, data) => axiosInstance.put(`/api/users/${id}`, data),
+  deleteUser: (id) => axiosInstance.delete(`/api/users/${id}`),
+  toggleUserStatus: (id) => axiosInstance.put(`/api/users/${id}/toggle-status`),
+  getProfile: () => axiosInstance.get('/api/users/profile'),
+  updateProfile: (data) => axiosInstance.put('/api/users/profile', data),
+  uploadAvatar: (data) => axiosInstance.post('/api/users/avatar', data),
+
+  // ============================
+  // PRODUITS
+  // ============================
+  getProducts: (params = {}) => axiosInstance.get('/api/products', { params }),
+  getProduct: (id) => axiosInstance.get(`/api/products/${id}`),
+  createProduct: (data) => axiosInstance.post('/api/products', data),
+  updateProduct: (id, data) => axiosInstance.put(`/api/products/${id}`, data),
+  deleteProduct: (id) => axiosInstance.delete(`/api/products/${id}`),
+  toggleProductStatus: (id) => axiosInstance.put(`/api/products/${id}/toggle-status`),
+  updateProductStock: (id, stock) => axiosInstance.put(`/api/products/${id}/stock`, { stock }),
+  uploadProductImages: (id, data) => axiosInstance.post(`/api/products/${id}/images`, data),
+  deleteProductImage: (id, index) => axiosInstance.delete(`/api/products/${id}/images/${index}`),
+
+  // ============================
+  // CATEGORIES
+  // ============================
+  getCategories: () => axiosInstance.get('/api/categories'),
+  getCategory: (id) => axiosInstance.get(`/api/categories/${id}`),
+  createCategory: (data) => axiosInstance.post('/api/categories', data),
+  updateCategory: (id, data) => axiosInstance.put(`/api/categories/${id}`, data),
+  deleteCategory: (id) => axiosInstance.delete(`/api/categories/${id}`),
+  uploadCategoryImage: (id, data) => axiosInstance.post(`/api/categories/${id}/image`, data),
+  toggleCategoryStatus: (id) => axiosInstance.put(`/api/categories/${id}/toggle-status`),
+
+  // ============================
+  // REVIEWS
+  // ============================
+  getProductReviews: (productId) => axiosInstance.get(`/api/products/${productId}/reviews`),
+  createReview: (productId, data) => axiosInstance.post(`/api/products/${productId}/reviews`, data),
+  markReviewHelpful: (reviewId) => axiosInstance.post(`/api/reviews/${reviewId}/helpful`),
+  moderateReview: (reviewId, data) => axiosInstance.put(`/api/reviews/${reviewId}/moderate`, data),
+
+  // ============================
+  // WISHLIST
+  // ============================
+  getWishlist: () => axiosInstance.get('/api/wishlist'),
+  addToWishlist: (productId) => axiosInstance.post(`/api/wishlist/${productId}`),
+  removeFromWishlist: (productId) => axiosInstance.delete(`/api/wishlist/${productId}`),
+  clearWishlist: () => axiosInstance.delete('/api/wishlist'),
+  checkWishlist: (productId) => axiosInstance.get(`/api/wishlist/${productId}/check`),
+
+  // ============================
+  // COMMANDES
+  // ============================
+  createOrder: (data) => axiosInstance.post('/api/orders', data),
+  getOrders: () => axiosInstance.get('/api/orders'),
+  getMyOrders: () => axiosInstance.get('/api/orders/my-orders'),
+  getOrder: (id) => axiosInstance.get(`/api/orders/${id}`),
+  downloadInvoice: (id) => axiosInstance.get(`/api/orders/${id}/invoice`, { responseType: 'blob' }),
+  updateOrderPayment: (id, data) => axiosInstance.put(`/api/orders/${id}/payment`, data),
+  updateOrderStatus: (id, data) => axiosInstance.put(`/api/orders/${id}/status`, data),
+
+  // ============================
+  // DASHBOARD
+  // ============================
+  getDashboardStats: () => axiosInstance.get('/api/dashboard/stats'),
+  getLowStock: () => axiosInstance.get('/api/dashboard/low-stock'),
+  getTopProducts: () => axiosInstance.get('/api/dashboard/top-products'),
+  getRecentOrders: () => axiosInstance.get('/api/dashboard/recent-orders'),
+
+  // ============================
+  // AUTRES
+  // ============================
+  getConfig: () => axiosInstance.get('/api/config'),
+  healthCheck: () => axiosInstance.get('/api/health'),
+};
+export default {axiosInstance, apiService};
