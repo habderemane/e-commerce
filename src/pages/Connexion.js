@@ -29,7 +29,9 @@ const Connexion = () => {
     const resultat = await connexion(donneesFormulaire.email, donneesFormulaire.motdepasse);
 
     if (resultat.succes) {
-      navigate('/');
+      let utilisateur = JSON.parse(localStorage.getItem('utilisateur'));
+      console.log(utilisateur.role);
+      (utilisateur.role!=='admin')?navigate('/'): navigate('/admin');
     } else {
       setErreur(resultat.erreur);
     }

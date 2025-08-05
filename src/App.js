@@ -15,6 +15,7 @@ import Commande from './pages/Commande';
 import MesCommandes from './pages/MesCommandes';
 import Wishlist from './pages/Wishlist';
 import './styles/Global.css';
+import TableauBordAdmin from "./pages/TableauBordAdmin";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
               <main>
                 <Routes>
                   <Route path="/" element={<Accueil />} />
+                  <Route path="/admin" element={<TableauBordAdmin />} />
                   <Route path="/produits" element={<Produits />} />
                   <Route path="/produits/:id" element={<DetailProduit />} />
                   <Route path="/panier" element={<Panier />} />
